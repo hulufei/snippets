@@ -1,0 +1,94 @@
+snippet cdm "lifecycle componentDidMount"
+componentDidMount() {
+	$0
+}
+endsnippet
+
+snippet cdu "lifecycle componentDidUpdate"
+componentDidUpdate(prevProps, prevState) {
+	$0
+}
+endsnippet
+
+snippet cwr "lifecycle componentWillReceiveProps"
+componentWillReceiveProps(nextProps) {
+	$0
+}
+endsnippet
+
+snippet cwu "lifecycle componentWillUpdate"
+componentWillUpdate(nextProps, nextState) {
+	$0
+}
+endsnippet
+
+snippet cwm "lifecycle componentWillMount"
+componentWillMount() {
+	$0
+}
+endsnippet
+
+snippet cwun "lifecycle componentWillUnmount"
+componentWillUnmount() {
+	$0
+}
+endsnippet
+
+snippet scu "lifecycle shouldComponentUpdate"
+shouldComponentUpdate(nextProps, nextState) {
+	$0
+}
+endsnippet
+
+snippet sst "setState"
+this.setState({
+	${1:key}: ${2:value},
+});
+endsnippet
+
+snippet rc "React ES6 Component"
+import React, { Component, PropTypes } from 'react';
+import classnames from 'classnames';
+
+class ${1:MyComponent} extends Component {
+	static propTypes = {
+	}
+
+	static defaultProps = {
+	}
+
+	state = {
+	}
+
+	render() {
+		return (
+			${2:<div>
+			${3:Hello}
+			</div>}
+		);
+	}
+}
+
+export default $1;
+endsnippet
+
+snippet rfunc "ES6 functional component"
+import React, { PropTypes } from 'react';
+
+function ${1:Name}(props) {
+	return (
+		${2:<div>
+		${3:Hello}
+		</div>}
+	);
+}
+
+$1.propTypes = {
+};
+
+export default $1;
+endsnippet
+
+snippet rbm "react bind method to this"
+this.${1:func} = this.$1.bind(this);
+endsnippet
