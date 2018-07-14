@@ -1,0 +1,118 @@
+snippet rs "ReasonReact.string"
+($0 |> ReasonReact.string)
+endsnippet
+
+snippet sc "statelessComponent" b
+let component = "${1:ComponentName}" |> ReasonReact.statelessComponent;
+
+let make = (_children) => {
+	...component,
+	render: _self =>
+	<div>
+		${0:("Hello" |> ReasonReact.string)}
+	</div>,
+};
+endsnippet
+
+snippet rc "reducerComponent" b
+type state = ${1:state}
+type action =
+	| ${2:Action}
+
+let component = "${3:ComponentName}" |> ReasonReact.reducerComponent;
+
+let make = (_children) => {
+	...component,
+	initialState: () => ${4:initialState},
+	reducer: (action, state) =>
+		switch (action) {
+		| $2 => ReasonReact.${5:Update}(${6:{...state}})
+		},
+	render: self =>
+		<div>
+			${0:("Hello" |> ReasonReact.string)}
+		</div>,
+endsnippet
+
+snippet match "pattern match"
+switch(${1:var}) {
+| ${2:pattern} => ${3:expression}
+}
+endsnippet
+
+snippet matcha "pattern match an array"
+switch(${1:var}) {
+| [||] => ${2:empty match}
+| [|${3:otherwise}|] => ${4:expression}
+}
+endsnippet
+
+snippet matchl "pattern match a list"
+switch(${1:var}) {
+| [] => ${2:empty match}
+| [x, ...${3:others}] => ${4:expression}
+}
+endsnippet
+
+snippet matcho "pattern match on an option type"
+switch(${1:var}) {
+| None => ${2:expression}
+| Some(${3:data}) => ${4:expression}
+}
+endsnippet
+
+snippet matchr "pattern match on an remote result type"
+switch (${1:var}) {
+| Remote.NotAsked
+| Remote.Loading => ${2:"Loading..." |> ReasonReact.string}
+| Remote.Failure(error) => ${3: error |> ReasonReact.string}
+| Remote.Success(${4:data}) => {
+	$0
+}
+endsnippet
+
+snippet fc "function"
+let ${1:name} = (${2:params}) => {
+	$0
+}
+endsnippet
+
+snippet afc "anonymous function"
+(${1:params}) => {
+	$0
+}
+endsnippet
+
+snippet let "let binding"
+let ${1:x} = ${2:v};
+endsnippet
+
+snippet if "if condition"
+if (${1:condition}) {
+	${2: /* A */}
+} else {
+	${3: /* B */}
+}
+endsnippet
+
+snippet mod "define module"
+module ${1:Name} = {
+	${2:/* Module contents */}
+};
+endsnippet
+
+snippet sig "module type signature"
+module type ${1:ModTypeName} {
+	${2: /* body of interface */}
+}
+endsnippet
+
+snippet ft "functor"
+module type ${1:ParamI} {
+	${2: /* body of params interface */}
+}
+
+module ${3:FunctorName} = (${4:ParamModule1}: $1) => {
+	${5:/* body of functor */}
+}
+endsnippet
