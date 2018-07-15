@@ -116,3 +116,24 @@ module ${3:FunctorName} = (${4:ParamModule1}: $1) => {
 	${5:/* body of functor */}
 }
 endsnippet
+
+snippet ra "ReasonReact.array"
+${1:arrayElems} |> Array.of_list |> ReasonReact.array
+endsnippet
+
+snippet lra "list to ReasonReact.array"
+${1:items} |> List.map((${2:item}) => {
+	${0:/* item element */}
+}) |> Array.of_list |> ReasonReact.array
+endsnippet
+
+snippet jdf "json field"
+${1:name}: json |> field("${2:$1}", ${3:decoder}),
+endsnippet
+
+snippet jd "Json.Decode"
+let ${1:dataDecode} = json =>
+	Json.Decode.{
+		${2:name}: json |> field("${3:$2}", ${4:decoder}),
+	};
+endsnippet
