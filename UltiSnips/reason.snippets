@@ -1,3 +1,16 @@
+snippet vt "Variant type"
+type ${1:action} =
+	| ${2:Tag}
+endsnippet
+
+snippet us "Unicode string"
+{js|${1:unicode}|js}
+endsnippet
+
+snippet urs "Unicode ReasonReact.string"
+({js|${1:unicode}|js} |> ReasonReact.string)
+endsnippet
+
 snippet rs "ReasonReact.string"
 ($0 |> ReasonReact.string)
 endsnippet
@@ -32,6 +45,38 @@ let make = (_children) => {
 		<div>
 			${0:("Hello" |> ReasonReact.string)}
 		</div>,
+}
+endsnippet
+
+snippet rcp "reducerComponent with retainedProps" b
+type state = ${1:state}
+type action =
+	| ${2:Action}
+
+type retainedProps = {
+	${7:propName}: ${8:propValueType}
+}
+let component = "${3:ComponentName}" |> ReasonReact.reducerComponentWithRetainedProps;
+
+let make = (~${10:propName}, _children) => {
+	...component,
+	initialState: () => ${4:initialState},
+	retainedProps: {
+		$7: $10,
+	},
+	didUpdate: ({oldSelf, newSelf}) =>
+		if (oldSelf.retainedProps.$7 !== newSelf.retainedProps.$7) {
+			${9:action} |> newSelf.send;
+		},
+	reducer: (action, state) =>
+		switch (action) {
+		| $2 => ReasonReact.${5:Update}(${6:{...state}})
+		},
+	render: self =>
+		<div>
+			${0:("Hello" |> ReasonReact.string)}
+		</div>,
+}
 endsnippet
 
 snippet match "pattern match"
@@ -66,7 +111,7 @@ switch (${1:var}) {
 | Remote.NotAsked
 | Remote.Loading => ${2:"Loading..." |> ReasonReact.string}
 | Remote.Failure(error) => ${3: error |> ReasonReact.string}
-| Remote.Success(${4:data}) => {
+| Remote.Success(${4:data}) =>
 	$0
 }
 endsnippet
@@ -95,6 +140,11 @@ if (${1:condition}) {
 }
 endsnippet
 
+snippet ift "if ternary sugar"
+${1:cond} ? ${2: expression} :
+	${3: expression}
+endsnippet
+
 snippet mod "define module"
 module ${1:Name} = {
 	${2:/* Module contents */}
@@ -118,10 +168,14 @@ module ${3:FunctorName} = (${4:ParamModule1}: $1) => {
 endsnippet
 
 snippet ra "ReasonReact.array"
-${1:arrayElems} |> Array.of_list |> ReasonReact.array
+[|${1:arrayElems}|] |> ReasonReact.array
 endsnippet
 
 snippet lra "list to ReasonReact.array"
+${1:arrayElems} |> Array.of_list |> ReasonReact.array
+endsnippet
+
+snippet mra "map list to ReasonReact.array"
 ${1:items} |> List.map((${2:item}) => {
 	${0:/* item element */}
 }) |> Array.of_list |> ReasonReact.array
@@ -136,4 +190,129 @@ let ${1:dataDecode} = json =>
 	Json.Decode.{
 		${2:name}: json |> field("${3:$2}", ${4:decoder}),
 	};
+endsnippet
+
+snippet bc "Bind component"
+/* Antd styles already included in less */
+/* [%bs.raw {|require("antd/lib/${1:name}/style")|}]; */
+
+[@bs.deriving abstract]
+type jsProps = {
+	[@bs.optional]
+	${2:prop}: ${3:value},
+	[@bs.optional]
+	${4:prop}: ${5:value},
+	[@bs.optional]
+	${6:prop}: ${7:value},
+	[@bs.optional]
+	${8:prop}: ${9:value},
+	[@bs.optional]
+	${10:prop}: ${11:value},
+	[@bs.optional]
+	${12:prop}: ${13:value},
+	[@bs.optional]
+	${14:prop}: ${15:value},
+	[@bs.optional]
+	${16:prop}: ${17:value},
+	[@bs.optional]
+	${18:prop}: ${19:value},
+	[@bs.optional]
+	${20:prop}: ${21:value},
+	[@bs.optional]
+	${22:prop}: ${23:value},
+	[@bs.optional]
+	${24:prop}: ${25:value},
+	[@bs.optional]
+	${26:prop}: ${27:value},
+	[@bs.optional]
+	${28:prop}: ${29:value},
+	[@bs.optional]
+	${30:prop}: ${31:value},
+	[@bs.optional]
+	${32:prop}: ${33:value},
+	[@bs.optional]
+	${34:prop}: ${35:value},
+	[@bs.optional]
+	${36:prop}: ${37:value},
+	[@bs.optional]
+	${38:prop}: ${39:value},
+	[@bs.optional]
+	${40:prop}: ${41:value},
+	[@bs.optional]
+	${42:prop}: ${43:value},
+	[@bs.optional]
+	${44:prop}: ${45:value},
+	[@bs.optional]
+	${46:prop}: ${47:value},
+	[@bs.optional]
+	${48:prop}: ${49:value},
+	[@bs.optional]
+	${50:prop}: ${51:value},
+};
+
+[@bs.module "antd/lib/$1"]
+external reactClass : ReasonReact.reactClass = "default";
+
+let make =
+	(
+		~$2=?,
+		~$4=?,
+		~$6=?,
+		~$8=?,
+		~$10=?,
+		~$12=?,
+		~$14=?,
+		~$16=?,
+		~$18=?,
+		~$20=?,
+		~$22=?,
+		~$24=?,
+		~$26=?,
+		~$28=?,
+		~$30=?,
+		~$32=?,
+		~$34=?,
+		~$36=?,
+		~$38=?,
+		~$40=?,
+		~$42=?,
+		~$44=?,
+		~$46=?,
+		~$48=?,
+		~$50=?,
+		children,
+	) =>
+	ReasonReact.wrapJsForReason(
+		~reactClass,
+		~props=
+			jsProps(
+				~$2?,
+				~$4?,
+				~$6?,
+				~$8?,
+				~$10?,
+				~$12?,
+				~$14?,
+				~$16?,
+				~$18?,
+				~$20?,
+				~$22?,
+				~$24?,
+				~$26?,
+				~$28?,
+				~$30?,
+				~$32?,
+				~$34?,
+				~$36?,
+				~$38?,
+				~$40?,
+				~$42?,
+				~$44?,
+				~$46?,
+				~$48?,
+				~$50?,
+				(),
+			),
+		children,
+	);
 endsnippet
