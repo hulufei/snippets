@@ -28,7 +28,7 @@ let make = (_children) => {
 endsnippet
 
 snippet rc "reducerComponent" b
-type state = ${1:state}
+type state = ${1:unit}
 type action =
 	| ${2:Action}
 
@@ -36,12 +36,12 @@ let component = "${3:ComponentName}" |> ReasonReact.reducerComponent;
 
 let make = (_children) => {
 	...component,
-	initialState: () => ${4:initialState},
-	reducer: (action, state) =>
+	initialState: () => ${4:()},
+	reducer: (action, _state) =>
 		switch (action) {
-		| $2 => ReasonReact.${5:Update}(${6:{...state}})
+		| $2 => ReasonReact.${5:NoUpdate}
 		},
-	render: self =>
+	render: _self =>
 		<div>
 			${0:("Hello" |> ReasonReact.string)}
 		</div>,
@@ -49,7 +49,7 @@ let make = (_children) => {
 endsnippet
 
 snippet rcp "reducerComponent with retainedProps" b
-type state = ${1:state}
+type state = ${1:unit}
 type action =
 	| ${2:Action}
 
@@ -60,7 +60,7 @@ let component = "${3:ComponentName}" |> ReasonReact.reducerComponentWithRetained
 
 let make = (~${10:propName}, _children) => {
 	...component,
-	initialState: () => ${4:initialState},
+	initialState: () => ${4:()},
 	retainedProps: {
 		$7: $10,
 	},
@@ -68,11 +68,11 @@ let make = (~${10:propName}, _children) => {
 		if (oldSelf.retainedProps.$7 !== newSelf.retainedProps.$7) {
 			${9:action} |> newSelf.send;
 		},
-	reducer: (action, state) =>
+	reducer: (action, _state) =>
 		switch (action) {
-		| $2 => ReasonReact.${5:Update}(${6:{...state}})
+		| $2 => ReasonReact.${5:NoUpdate}
 		},
-	render: self =>
+	render: _self =>
 		<div>
 			${0:("Hello" |> ReasonReact.string)}
 		</div>,
@@ -108,10 +108,10 @@ endsnippet
 
 snippet matchr "pattern match on an remote result type"
 switch (${1:var}) {
-| Remote.NotAsked
-| Remote.Loading => ${2:"Loading..." |> ReasonReact.string}
-| Remote.Failure(error) => ${3: error |> ReasonReact.string}
-| Remote.Success(${4:data}) =>
+| ${5:RequestName}.NotAsked
+| $5.Loading => ${2:"Loading..." |> ReasonReact.string}
+| $5.Error({msg}) => ${3: msg |> ReasonReact.string}
+| $5.Ok(${4:data}) =>
 	$0
 }
 endsnippet
@@ -190,6 +190,22 @@ let ${1:dataDecode} = json =>
 	Json.Decode.{
 		${2:name}: json |> field("${3:$2}", ${4:decoder}),
 	};
+endsnippet
+
+snippet tjd "type with json decode"
+type ${1:name} = {
+	${2:k}: ${3:int},
+	${4:k}: ${5:int},
+	${6:k}: ${7:int},
+	${8:k}: ${9:int},
+};
+let ${10:$1}Decode = json =>
+	Json.Decode.{
+		$2: json |> field("$2", $3),
+		$4: json |> field("$4", $5),
+		$6: json |> field("$6", $7),
+		$8: json |> field("$8", $9),
+	}
 endsnippet
 
 snippet bc "Bind component"
@@ -315,4 +331,36 @@ let make =
 			),
 		children,
 	);
+endsnippet
+
+snippet tsmap "type and string map"
+type ${1:name} =
+	| ${2:T1}
+	| ${3:T2}
+	| ${4:T3}
+	| ${5:T4};
+let string_of_$1 = t =>
+	switch (t) {
+	| $2 => "${6:str}"
+	| $3 => "${7:str}"
+	| $4 => "${8:str}"
+	| $5 => "${9:str}"
+	};
+let $1_of_string = s =>
+	switch (s) => {
+	| $6 => $2
+	| $7 => $3
+	| $8 => $4
+	| $9 => $5
+	| _ => ${0:$1}
+	};
+endsnippet
+
+snippet reqm "Request make"
+module Request${1:Name} =
+	Request.Make({
+		type data = ${2:$1};
+		let dataDecode = ${3:$1}Decode;
+		let silent = ${4:false};
+	});
 endsnippet
