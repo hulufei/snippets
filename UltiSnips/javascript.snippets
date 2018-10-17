@@ -47,7 +47,8 @@ this.setState({
 endsnippet
 
 snippet rc "React ES6 Component"
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 class ${1:MyComponent} extends Component {
@@ -91,4 +92,18 @@ endsnippet
 
 snippet rbm "react bind method to this"
 this.${1:func} = this.$1.bind(this);
+endsnippet
+
+snippet tst "test scaffold"
+import React from 'react';
+import { shallow } from 'enzyme';
+import ${1:Component} from '${2:./index}';
+
+describe('${3:$1}', () => {
+	it('should render correctly', () => {
+		const wrapper = shallow(<$1 />);
+
+		expect(wrapper).toMatchSnapshot();
+	});
+});
 endsnippet
