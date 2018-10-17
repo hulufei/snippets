@@ -94,7 +94,7 @@ snippet rbm "react bind method to this"
 this.${1:func} = this.$1.bind(this);
 endsnippet
 
-snippet tst "test scaffold"
+snippet cst "component test scaffold"
 import React from 'react';
 import { shallow } from 'enzyme';
 import ${1:Component} from '${2:./index}';
@@ -104,6 +104,23 @@ describe('${3:$1}', () => {
 		const wrapper = shallow(<$1 />);
 
 		expect(wrapper).toMatchSnapshot();
+	});
+});
+endsnippet
+
+snippet ast "action test scaffold"
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+const mockStore = configureMockStore([thunk]);
+
+import * as ${1:actions} from './index';
+
+describe('actions/$1', () => {
+	it('should ${2:action}', () => {
+		const store = mockStore({});
+		return store.dispatch($1.${2}()).then(() => {
+			expect(store.getActions()).toMatchSnapshot();
+		});
 	});
 });
 endsnippet
